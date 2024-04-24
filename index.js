@@ -3,13 +3,13 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 const { MongoClient, ObjectId, ServerApiVersion } = require("mongodb");
+const { default: axios } = require("axios");
 const port = process.env.PORT || 4000;
 const uri = process.env.MONGO_URI;
-
+const secret = process.env.SITE_SECRET
 //middlewares
 app.use(cors());
 app.use(express.json());
-
 //mongo client
 const client = new MongoClient(uri, {
   serverApi: {
@@ -24,6 +24,32 @@ const run = async () => {
     await client.connect();
 
     const bookmarkSurahCollection = client.db('al-quran-db').collection('bookmarkSurah');
+    const surahCollection = client.db('al-quran-db').collection('surahs');
+
+    app.get('/surahs',async(req,res)=>{
+        const result = await surahCollection.find().toArray();
+        res.send(result)
+    })
+      
+    app.get('/surah/:id',async(req,res)=>{
+        const id = parseInt(req.params.id);
+        const filter = {surah_id: id}
+        const result = await surahCollection.find(filter).toArray()
+        res.send(result)
+    })
+
+    app.get('/bookmark_surah',async(req,res)=>{
+        const result = await bookmarkSurahCollection.find().toArray();
+        res.send(result)
+    })
+
+    app.get('/bookmark_surah/:email',async(req,res)=>{
+        const email = req.params.email;
+
+        const filter = {email: email};
+        const result = await bookmarkSurahCollection.find(filter).toArray();
+        res.send(result)
+    })
 
     app.post('/bookmark_surah',async(req,res)=>{
         const bookmarkSurah = req.body;
