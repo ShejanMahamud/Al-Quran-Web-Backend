@@ -6,7 +6,7 @@ const { MongoClient, ObjectId, ServerApiVersion } = require("mongodb");
 const { default: axios } = require("axios");
 const port = process.env.PORT || 4000;
 const uri = process.env.MONGO_URI;
-const secret = process.env.SITE_SECRET
+// const secret = process.env.SITE_SECRET
 //middlewares
 app.use(cors());
 app.use(express.json());
@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 
 const run = async () => {
   try {
-    await client.connect();
+    // await client.connect();
 
     const bookmarkSurahCollection = client.db('al-quran-db').collection('bookmarkSurah');
     const surahCollection = client.db('al-quran-db').collection('surahs');
@@ -57,10 +57,10 @@ const run = async () => {
         res.send(result)
     })
 
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    // await client.db("admin").command({ ping: 1 });
+    // console.log(
+    //   "Pinged your deployment. You successfully connected to MongoDB!"
+    // );
   } finally {
   }
 };
