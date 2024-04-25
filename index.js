@@ -21,7 +21,7 @@ const client = new MongoClient(uri, {
 
 const run = async () => {
   try {
-    // await client.connect();
+    await client.connect();
 
     const bookmarkSurahCollection = client.db('al-quran-db').collection('bookmarkSurah');
     const surahCollection = client.db('al-quran-db').collection('surahs');
@@ -57,10 +57,10 @@ const run = async () => {
         res.send(result)
     })
 
-    // await client.db("admin").command({ ping: 1 });
-    // console.log(
-    //   "Pinged your deployment. You successfully connected to MongoDB!"
-    // );
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
   } finally {
   }
 };
